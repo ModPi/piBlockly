@@ -27,3 +27,22 @@
 //goog.provide('Blockly.Blocks.text');
 
 goog.require('Blockly.Blocks');
+
+/////////
+Blockly.Blocks['print'] = {
+  init: function() {
+    this.appendValueInput("message")
+        .setCheck("String")
+        .appendField("Print: ");
+    this.setInputsInline(true);
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+    this.setTooltip('');
+  }
+};
+
+Blockly.Python['print'] = function(block) {
+  var valueNum = Blockly.Python.valueToCode(block, 'message', Blockly.Python.ORDER_ATOMIC);
+  var code = 'print '+valueNum+'\n';
+  return code;
+};
