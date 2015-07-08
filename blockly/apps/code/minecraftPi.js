@@ -65,4 +65,38 @@ Blockly.Python['post_to_chat'] = function(block) {
   return code;
 };
 /////////
+Blockly.Blocks['sleep_time'] = {
+  init: function() {
+    this.appendValueInput("num")
+        .setCheck("Number")
+        .appendField("Pause: ");
+    this.setInputsInline(true);
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+    this.setTooltip('');
+  }
+};
+
+Blockly.Python['sleep_time'] = function(block) {
+  var valueNum = Blockly.Python.valueToCode(block, 'num', Blockly.Python.ORDER_ATOMIC);
+  var code = 'time.sleep('+valueNum+');\n';
+  return code;
+};
+/////////
+Blockly.Blocks['get_block'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("Get Blocks: ");
+    this.setInputsInline(true);
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+    this.setTooltip('');
+  }
+};
+
+Blockly.Python['get_block'] = function(block) {
+  var valueNum = Blockly.Python.valueToCode(block, 'num', Blockly.Python.ORDER_ATOMIC);
+  var code = 'time.sleep('+valueNum+');\n';
+  return code;
+};
 
