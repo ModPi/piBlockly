@@ -46,3 +46,22 @@ Blockly.Python['print'] = function(block) {
   var code = 'print '+valueNum+'\n';
   return code;
 };
+
+
+Blockly.Blocks['input'] = {
+  init: function() {
+    this.appendValueInput("message")
+        .setCheck("Number")
+        .appendField("Input ");
+    this.setInputsInline(true);
+    this.setTooltip('');
+    this.setOutput(true, Boolean);
+  }
+};
+
+Blockly.Python['input'] = function(block) {
+  var valueNum = Blockly.Python.valueToCode(block, 'message', Blockly.Python.ORDER_ATOMIC);
+  Blockly.Python.definitions_['define_setMode'] = 'GPIO.setmode(' + valueNum + ')\n'
+  var code = 'GPIO.input('+valueNum+')\n';
+  return [code, Blockly.JavaScript.ORDER_NONE];
+};

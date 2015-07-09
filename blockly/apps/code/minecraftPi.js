@@ -95,6 +95,7 @@ Blockly.Blocks['get_block'] = {
     this.setColour(20);
     this.appendDummyInput()
         .appendField("Get Block");
+    this.setInputsInline(true);
     this.appendValueInput("xCoord")
         .setCheck("Number")
         .appendField(" X Coord:");
@@ -104,7 +105,7 @@ Blockly.Blocks['get_block'] = {
     this.appendValueInput("zCoord")
         .setCheck("Number")
         .appendField("Z Coord:");
-    this.setOutput(true, Boolean);
+    this.setOutput(true, Number);
     this.setTooltip('');
   }
 }
@@ -124,6 +125,6 @@ Blockly.Python['get_block'] = function(block) {
     value_zcoord = 0;
   }
   var code = 'mc.getBlock('+value_xcoord+', '+value_ycoord+', '+value_zcoord+');\n'
-  return code;
+  return [code, Blockly.JavaScript.ORDER_NONE];
 };
 
