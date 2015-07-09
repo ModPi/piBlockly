@@ -44,6 +44,7 @@
   <script type="text/javascript" src="../../{$ij.langSrc}"></script>
   <script type="text/javascript" src="minecraft.js"></script>
   <script type="text/javascript" src="minecraftPi.js"></script>
+  <script type="text/javascript" src="minecraftPi2.js"></script>
   <script type="text/javascript" src="raspberryPi.js"></script>
   <script type="text/javascript" src="simulator.js"></script>
   <table width="100%" height="100%">
@@ -92,10 +93,22 @@
   <xml id="toolbox" style="display: none">
     <category name="Minecraft Pi">
         <category name="Game">
-            <block type="get_block"></block>
+            <block type="get_height"></block>
+            <block type="get_player_entity_ids"></block>
+            <block type="get_play_entity_id"></block>
+            <block type="save_checkpoint"></block>
+            <block type="restore_checkpoint"></block>
             <block type="post_to_chat"></block>
+            <block type="setting"></block>
         </category>
         <category name="Blocks">
+          <block type="get_block"></block>
+          <block type="get_blocks"></block>
+          <block type="get_block_with_data"></block>
+          <block type="set_block"></block>
+          <block type="set_blocks"></block>
+        </category>
+        <category name="Materials">
         </category>
         <category name="Events">
         </category>
