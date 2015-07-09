@@ -65,4 +65,65 @@ Blockly.Python['post_to_chat'] = function(block) {
   return code;
 };
 /////////
+Blockly.Blocks['sleep_time'] = {
+  init: function() {
+    this.appendValueInput("num")
+        .setCheck("Number")
+        .appendField("Pause: ");
+    this.setInputsInline(true);
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+    this.setTooltip('');
+  }
+};
+
+Blockly.Python['sleep_time'] = function(block) {
+  var valueNum = Blockly.Python.valueToCode(block, 'num', Blockly.Python.ORDER_ATOMIC);
+  if(!valueNum){
+    valueNum = 0;
+  }
+   Blockly.Python.definitons_['blah_'] = 'hello world\n';
+   //Blockly.Arduino.definitions_['define_liquidcrystal'] =   '#include <LiquidCrystal.h>\n';
+
+  var code = 'time.sleep('+valueNum+');\n';
+  return code;
+};
+/////////
+Blockly.Blocks['get_block'] = {
+  init: function() {
+    this.setHelpUrl('http://www.example.com/');
+    this.setColour(20);
+    this.appendDummyInput()
+        .appendField("Get Block");
+    this.appendValueInput("xCoord")
+        .setCheck("Number")
+        .appendField(" X Coord:");
+    this.appendValueInput("yCoord")
+        .setCheck("Number")
+        .appendField("Y Coord:");
+    this.appendValueInput("zCoord")
+        .setCheck("Number")
+        .appendField("Z Coord:");
+    this.setOutput(true, Boolean);
+    this.setTooltip('');
+  }
+}
+
+Blockly.Python['get_block'] = function(block) {
+  var value_xcoord = Blockly.Python.valueToCode(block, 'xCoord', Blockly.Python.ORDER_ATOMIC);
+  var value_ycoord = Blockly.Python.valueToCode(block, 'yCoord', Blockly.Python.ORDER_ATOMIC);
+  var value_zcoord = Blockly.Python.valueToCode(block, 'zCoord', Blockly.Python.ORDER_ATOMIC);
+
+  if(!value_xcoord){
+    value_xcoord = 0;
+  }
+  if(!value_ycoord){
+    value_ycoord = 0;
+  }
+  if(!value_zcoord){
+    value_zcoord = 0;
+  }
+  var code = 'mc.getBlock('+value_xcoord+', '+value_ycoord+', '+value_zcoord+');\n'
+  return code;
+};
 
