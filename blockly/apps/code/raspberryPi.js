@@ -63,5 +63,5 @@ Blockly.Python['input'] = function(block) {
   var valueNum = Blockly.Python.valueToCode(block, 'message', Blockly.Python.ORDER_ATOMIC);
   Blockly.Python.definitions_['define_setMode'] = 'GPIO.setmode(' + valueNum + ')\n'
   var code = 'GPIO.input('+valueNum+')\n';
-  return [code, Blockly.JavaScript.ORDER_NONE];
+  return [code, Blockly.Python.ORDER_NONE];
 };
