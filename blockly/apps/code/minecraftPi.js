@@ -336,3 +336,40 @@ Blockly.Python['set_blocks'] = function(block) {
   var code = 'mc.setBlocks('+value_xcoord+', '+value_ycoord+', '+value_zcoord+', ' + value_xcoord_end+', '+value_ycoord_end+', '+value_zcoord_end+ ');\n'
   return [code, Blockly.Python.ORDER_NONE];
 };
+
+//Game Function calls
+//*******************
+//*******************
+//*******************
+Blockly.Blocks['get_height'] = {
+  init: function() {
+  	this.appendDummyInput()
+  		.appendField("Highest Block at coordinates: ");
+    this.appendValueInput("xCoord")
+        .setCheck("Number")
+        .appendField("X  ");
+    this.appendValueInput("yCoord")
+        .setCheck("Number")
+        .appendField("Y  ");
+    this.setInputsInline(true);
+    this.setOutput(true, Number);
+    this.setTooltip('Returns the height of the tallest block at the specific X and Y coordinate.');
+    this.setColour(120);
+  }
+};
+
+Blockly.Python['get_height'] = function(block) {
+  var value_XCoord = Blockly.Python.valueToCode(block, 'xCoord', Blockly.Python.ORDER_ATOMIC);
+  var value_YCoord = Blockly.Python.valueToCode(block, 'yCoord', Blockly.Python.ORDER_ATOMIC);
+
+  if(!value_XCoord){
+  	value_XCoord = 0;
+  }
+  if(!value_YCoord){
+  	value_YCoord = 0;
+  }
+
+  var code = 'mc.getHeight('+value_XCoord+', '+value_YCoord+');\n';
+  return [code, Blockly.Python.ORDER_NONE];
+};
+
