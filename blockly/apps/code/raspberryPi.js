@@ -65,3 +65,27 @@ Blockly.Python['input'] = function(block) {
   var code = 'GPIO.input('+valueNum+')\n';
   return [code, Blockly.Python.ORDER_NONE];
 };
+
+/////////
+Blockly.Blocks['sleep_time'] = {
+  init: function() {
+    this.appendValueInput("num")
+        .setCheck("Number")
+        .appendField("Pause: ");
+    this.setInputsInline(true);
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+    this.setTooltip('');
+  }
+};
+
+Blockly.Python['sleep_time'] = function(block) {
+  Blockly.Python.definitions_['import_time'] = 'import time as time\n'
+  var valueNum = Blockly.Python.valueToCode(block, 'num', Blockly.Python.ORDER_ATOMIC);
+  if(!valueNum){
+    valueNum = 0;
+  }
+  var code = 'time.sleep('+valueNum+');\n';
+  return code;
+};
+
