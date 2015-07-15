@@ -28,24 +28,6 @@
 
 goog.require('Blockly.Blocks');
 
-/////////
-Blockly.Blocks['sleep_time'] = {
-  init: function() {
-    this.appendValueInput("num")
-        .setCheck("Number")
-        .appendField("Pause: ");
-    this.setInputsInline(true);
-    this.setPreviousStatement(true);
-    this.setNextStatement(true);
-    this.setTooltip('');
-  }
-};
-
-Blockly.Python['sleep_time'] = function(block) {
-  var valueNum = Blockly.Python.valueToCode(block, 'num', Blockly.Python.ORDER_ATOMIC);
-  var code = 'time.sleep('+valueNum+');\n';
-  return code;
-};
 ////////
 Blockly.Blocks['post_to_chat'] = {
   init: function() {
@@ -56,37 +38,16 @@ Blockly.Blocks['post_to_chat'] = {
     this.setPreviousStatement(true);
     this.setNextStatement(true);
     this.setTooltip('');
+    this.setColour(120);
   }
 };
 
 Blockly.Python['post_to_chat'] = function(block) {
   var msg = Blockly.Python.valueToCode(block, 'msgToPost', Blockly.Python.ORDER_ATOMIC);
-  var code = 'mc.postToChat('+msg+');\n';
+  var code = 'mc.postToChat('+msg+')\n';
   return code;
 };
-/////////
-Blockly.Blocks['sleep_time'] = {
-  init: function() {
-    this.appendValueInput("num")
-        .setCheck("Number")
-        .appendField("Pause: ");
-    this.setInputsInline(true);
-    this.setPreviousStatement(true);
-    this.setNextStatement(true);
-    this.setTooltip('');
-  }
-};
 
-Blockly.Python['sleep_time'] = function(block) {
-  var valueNum = Blockly.Python.valueToCode(block, 'num', Blockly.Python.ORDER_ATOMIC);
-  if(!valueNum){
-    valueNum = 0;
-  }
-   //Blockly.Arduino.definitions_['define_liquidcrystal'] =   '#include <LiquidCrystal.h>\n';
-
-  var code = 'time.sleep('+valueNum+');\n';
-  return code;
-};
 /////////
 Blockly.Blocks['get_block'] = {
   init: function() {
@@ -122,7 +83,7 @@ Blockly.Python['get_block'] = function(block) {
   if(!value_zcoord){
     value_zcoord = 0;
   }
-  var code = 'mc.getBlock('+value_xcoord+', '+value_ycoord+', '+value_zcoord+');\n'
+  var code = 'mc.getBlock('+value_xcoord+', '+value_ycoord+', '+value_zcoord+')\n'
   return [code, Blockly.Python.ORDER_NONE];
 };
 
@@ -185,7 +146,7 @@ Blockly.Python['get_blocks'] = function(block) {
   if(!value_zcoord_end){
     value_zcoord_end = 0;
   }
-  var code = 'mc.getBlocks('+value_xcoord+', '+value_ycoord+', '+value_zcoord+', ' + value_xcoord_end+', '+value_ycoord_end+', '+value_zcoord_end+ ');\n'
+  var code = 'mc.getBlocks('+value_xcoord+', '+value_ycoord+', '+value_zcoord+', ' + value_xcoord_end+', '+value_ycoord_end+', '+value_zcoord_end+ ')\n'
   return [code, Blockly.Python.ORDER_NONE];
 };
 
@@ -227,7 +188,7 @@ Blockly.Python['get_block_with_data'] = function(block) {
     value_zcoord = 0;
   }
 
-  var code = 'mc.getBlockWithData(' + value_xcoord + ', '+value_ycoord + ', ' + value_zcoord + ');\n'
+  var code = 'mc.getBlockWithData(' + value_xcoord + ', '+value_ycoord + ', ' + value_zcoord + ')\n'
   return [code, Blockly.Python.ORDER_NONE];
 };
 
@@ -249,8 +210,8 @@ Blockly.Blocks['set_block'] = {
     this.appendValueInput("zCoord")
         .setCheck("Number")
         .appendField("Z Coord:");
-
-    this.setOutput(true, Number);
+    this.setNextStatement(true);
+    this.setPreviousStatement(true);
     this.setTooltip('Creates a block at the given coordinate!');
   }
 }
@@ -270,8 +231,8 @@ Blockly.Python['set_block'] = function(block) {
     value_zcoord = 0;
   }
 
-  var code = 'mc.setBlock(' + value_xcoord + ', '+value_ycoord + ', ' + value_zcoord + ');\n'
-  return [code, Blockly.Python.ORDER_NONE];
+  var code = 'mc.setBlock(' + value_xcoord + ', '+value_ycoord + ', ' + value_zcoord + ')\n'
+  return code;
 };
 
 /////////
@@ -301,7 +262,8 @@ Blockly.Blocks['set_blocks'] = {
     this.appendValueInput("zCoordEnd")
         .setCheck("Number")
         .appendField("Z Coord End:");
-    this.setOutput(true, Number);
+    this.setNextStatement(true);
+    this.setPreviousStatement(true);
     this.setTooltip('Creates a cube of blocks from the first coordinate to the second coordinate.');
   }
 }
@@ -333,8 +295,8 @@ Blockly.Python['set_blocks'] = function(block) {
   if(!value_zcoord_end){
     value_zcoord_end = 0;
   }
-  var code = 'mc.setBlocks('+value_xcoord+', '+value_ycoord+', '+value_zcoord+', ' + value_xcoord_end+', '+value_ycoord_end+', '+value_zcoord_end+ ');\n'
-  return [code, Blockly.Python.ORDER_NONE];
+  var code = 'mc.setBlocks('+value_xcoord+', '+value_ycoord+', '+value_zcoord+', ' + value_xcoord_end+', '+value_ycoord_end+', '+value_zcoord_end+ ')\n'
+  return code;
 };
 
 //Game Function calls
@@ -369,7 +331,117 @@ Blockly.Python['get_height'] = function(block) {
   	value_YCoord = 0;
   }
 
-  var code = 'mc.getHeight('+value_XCoord+', '+value_YCoord+');\n';
+  var code = 'mc.getHeight('+value_XCoord+', '+value_YCoord+')\n';
   return [code, Blockly.Python.ORDER_NONE];
 };
 
+//////
+Blockly.Blocks['get_player_entity_ids'] = {
+  init: function() {
+    this.appendDummyInput()
+      .appendField("Get all player IDs");
+    this.setInputsInline(true);
+    this.setOutput(true, null);
+    this.setTooltip('Returns a list of all IDs');
+    this.setColour(120);
+  }
+};
+
+Blockly.Python['get_player_entity_ids'] = function(block) {
+  var code = 'mc.getPlayerEntityIds()\n';
+  return [code, Blockly.Python.ORDER_NONE];
+};
+
+//////
+Blockly.Blocks['get_player_entity_id'] = {
+  init: function() {
+    this.appendDummyInput()
+      .appendField("Get ID from player named:");
+    this.appendValueInput("playerName")
+      .setCheck("String")
+    this.appendDummyInput()
+      .appendField('id');
+    this.setInputsInline(true);
+    this.setOutput(true, null);
+    this.setTooltip('Returns a list of all IDs');
+    this.setColour(120);
+  }
+};
+
+Blockly.Python['get_player_entity_id'] = function(block) {
+  var value_playerName = Blockly.Python.valueToCode(block, 'playerName', Blockly.Python.ORDER_ATOMIC);
+  var code = 'mc.getPlayerEntityId('+value_playerName+')\n';
+  return [code, Blockly.Python.ORDER_NONE];
+};
+
+//////
+Blockly.Blocks['save_checkpoint'] = {
+  init: function() {
+    this.appendDummyInput()
+      .appendField("Save Checkpoint");
+    this.setNextStatement(true);
+    this.setPreviousStatement(true);
+    this.setTooltip('Saves the current state of the world');
+    this.setColour(120);
+  }
+};
+
+Blockly.Python['save_checkpoint'] = function(block) {
+  var code = 'mc.saveCheckpoint()\n';
+  return code;
+};
+
+//////
+Blockly.Blocks['restore_checkpoint'] = {
+  init: function() {
+    this.appendDummyInput()
+      .appendField("Restore Checkpoint");
+    this.setNextStatement(true);
+    this.setPreviousStatement(true);
+    this.setTooltip('Restores the previous saved state of the world');
+    this.setColour(120);
+  }
+};
+
+Blockly.Python['restore_checkpoint'] = function(block) {
+  var code = 'mc.restoreCheckpoint()\n';
+  return code;
+};
+
+//////
+Blockly.Blocks['immutable_setting'] = {
+  init: function() {
+    this.appendDummyInput()
+      .appendField("Enable the world to be modified?")
+      .appendField(new Blockly.FieldDropdown([['True', 'True'], ['False', 'False']]), "immutableWorld");
+    this.setNextStatement(true);
+    this.setPreviousStatement(true);
+    this.setTooltip('Enables / Disables the immutability of the world');
+    this.setColour(120);
+  }
+};
+
+Blockly.Python['immutable_setting'] = function(block) {
+  var value_immutableWorld = this.getFieldValue('immutableWorld');
+  var code = 'mc.setting("world_immutable", '+ value_immutableWorld +')\n';
+  return code;
+};
+
+//////
+Blockly.Blocks['nametag_setting'] = {
+  init: function() {
+    this.appendDummyInput()
+      .appendField("Set nametags visible?")
+      .appendField(new Blockly.FieldDropdown([['True', 'True'], ['False', 'False']]), "visibleNametags");
+    this.setNextStatement(true);
+    this.setPreviousStatement(true);
+    this.setTooltip('Enables / Disables visible player nametags');
+    this.setColour(120);
+  }
+};
+
+Blockly.Python['nametag_setting'] = function(block) {
+  var value_visibleNametags = this.getFieldValue('visibleNametags');
+  var code = 'mc.setting("nametags_visible", '+ value_visibleNametags +')\n';
+  return code;
+};
