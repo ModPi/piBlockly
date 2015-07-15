@@ -336,19 +336,22 @@ Blockly.Python['get_height'] = function(block) {
 };
 
 //////
-Blockly.Blocks['get_player_entity_ids'] = {
+Blockly.Blocks['get_player_name_entity_id'] = {
   init: function() {
     this.appendDummyInput()
-      .appendField("Get all player IDs");
+      .appendField("Player named:");
+    this.appendValueInput("playerName")
+      .setCheck("String")
     this.setInputsInline(true);
     this.setOutput(true, null);
-    this.setTooltip('Returns a list of all IDs');
+    this.setTooltip('Returns a specific player');
     this.setColour(120);
   }
 };
 
-Blockly.Python['get_player_entity_ids'] = function(block) {
-  var code = 'mc.getPlayerEntityIds()\n';
+Blockly.Python['get_player_name_entity_id'] = function(block) {
+  var value_playerName = Blockly.Python.valueToCode(block, 'playerName', Blockly.Python.ORDER_ATOMIC);
+  var code = 'mc.getPlayerEntityId('+value_playerName+')\n';
   return [code, Blockly.Python.ORDER_NONE];
 };
 
@@ -356,21 +359,18 @@ Blockly.Python['get_player_entity_ids'] = function(block) {
 Blockly.Blocks['get_player_entity_id'] = {
   init: function() {
     this.appendDummyInput()
-      .appendField("Get ID from player named:");
-    this.appendValueInput("playerName")
-      .setCheck("String")
-    this.appendDummyInput()
-      .appendField('id');
-    this.setInputsInline(true);
-    this.setOutput(true, null);
-    this.setTooltip('Returns a list of all IDs');
-    this.setColour(120);
+      .appendField("Player #:")
+      .appendField(new Blockly.FieldDropdown([['1', '0'], ['2', '1'], ['3', '2'], ['4', '3']]), "playerNumber");
+      this.setInputsInline(true);
+      this.setOutput(true, null);
+      this.setTooltip('Returns a specific player');
+      this.setColour(120);
   }
 };
 
 Blockly.Python['get_player_entity_id'] = function(block) {
-  var value_playerName = Blockly.Python.valueToCode(block, 'playerName', Blockly.Python.ORDER_ATOMIC);
-  var code = 'mc.getPlayerEntityId('+value_playerName+')\n';
+  var value_playerNumber = this.getFieldValue('playerNumber');
+  var code = 'mc.getPlayerEntityIds()['+value_playerNumber+']\n';
   return [code, Blockly.Python.ORDER_NONE];
 };
 
