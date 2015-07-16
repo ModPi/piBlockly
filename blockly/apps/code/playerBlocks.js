@@ -40,7 +40,7 @@ Blockly.Blocks['get_pos_x'] = {
   }
 }
 Blockly.Python['get_pos_x'] = function(block) {
-  var code = 'mc.player.getPos().x;\n'
+  var code = 'mc.player.getPos().x'
   return [code, Blockly.Python.ORDER_NONE];
 };
 
@@ -56,7 +56,7 @@ Blockly.Blocks['get_pos_y'] = {
   }
 }
 Blockly.Python['get_pos_y'] = function(block) {
-  var code = 'mc.player.getPos().y;\n'
+  var code = 'mc.player.getPos().y'
   return [code, Blockly.Python.ORDER_NONE];
 };
 
@@ -72,7 +72,7 @@ Blockly.Blocks['get_pos_z'] = {
   }
 }
 Blockly.Python['get_pos_z'] = function(block) {
-  var code = 'mc.player.getPos().z;\n'
+  var code = 'mc.player.getPos().z'
   return [code, Blockly.Python.ORDER_NONE];
 };
 
@@ -88,7 +88,7 @@ Blockly.Blocks['get_tile_pos_x'] = {
   }
 }
 Blockly.Python['get_tile_pos_x'] = function(block) {
-  var code = 'mc.player.getTilePos().x;\n'
+  var code = 'mc.player.getTilePos().x'
   return [code, Blockly.Python.ORDER_NONE];
 };
 
@@ -104,7 +104,7 @@ Blockly.Blocks['get_tile_pos_y'] = {
   }
 }
 Blockly.Python['get_tile_pos_y'] = function(block) {
-  var code = 'mc.player.getTilePos().y;\n'
+  var code = 'mc.player.getTilePos().y'
   return [code, Blockly.Python.ORDER_NONE];
 };
 
@@ -120,7 +120,7 @@ Blockly.Blocks['get_tile_pos_z'] = {
   }
 }
 Blockly.Python['get_tile_pos_z'] = function(block) {
-  var code = 'mc.player.getTilePos().z;\n'
+  var code = 'mc.player.getTilePos().z'
   return [code, Blockly.Python.ORDER_NONE];
 };
 
@@ -208,21 +208,4 @@ Blockly.Python['set_tile_pos'] = function(block) {
   return code;
 };
 
-//////
-Blockly.Blocks['autojump_setting'] = {
-  init: function() {
-    this.appendDummyInput()
-      .appendField("Set autojump?")
-      .appendField(new Blockly.FieldDropdown([['True', 'True'], ['False', 'False']]), "autojump");
-    this.setNextStatement(true);
-    this.setPreviousStatement(true);
-    this.setTooltip('Enables / Disables autojump');
-    this.setColour(230);
-  }
-};
 
-Blockly.Python['autojump_setting'] = function(block) {
-  var value_autojump = this.getFieldValue('autojump');
-  var code = 'mc.player.setting("autojump", '+ value_autojump +')\n';
-  return code;
-};
