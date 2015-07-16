@@ -45,6 +45,7 @@
   <script type="text/javascript" src="minecraft.js"></script>
   <script type="text/javascript" src="minecraftPi.js"></script>
   <script type="text/javascript" src="playerBlocks.js"></script>
+  <script type="text/javascript" src="multiplayerBlocks.js"></script>
   <script type="text/javascript" src="raspberryPi.js"></script>
   <script type="text/javascript" src="simulator.js"></script>
   <table width="100%" height="100%">
@@ -92,15 +93,13 @@
 {template .toolbox}
   <xml id="toolbox" style="display: none">
     <category name="Minecraft Pi">
-        <category name="Game">
-            <block type="get_height"></block> 
-            <block type="get_player_name_entity_id"></block> 
-            <block type="get_player_entity_id"></block> 
-            <block type="save_checkpoint"></block> 
-            <block type="restore_checkpoint"></block>
+        <category name="Game"> 
             <block type="post_to_chat"></block>
             <block type="immutable_setting"></block>
             <block type="nametag_setting"></block>
+            <block type="autojump_setting"></block>
+            <block type="save_checkpoint"></block> 
+            <block type="restore_checkpoint"></block>
         </category>
         <category name="Blocks">
           <block type="get_block"></block>
@@ -108,6 +107,7 @@
           <block type="get_block_with_data"></block>
           <block type="set_block"></block>
           <block type="set_blocks"></block>
+          <block type="get_height"></block>
         </category>
         <category name="Player">
           <block type="get_pos_x"></block>
@@ -115,10 +115,21 @@
           <block type="get_pos_z"></block>
           <block type="set_pos"></block>
           <block type="set_tile_pos"></block>
-          <block type="autojump_setting"></block>
           <block type="get_tile_pos_x"></block>
           <block type="get_tile_pos_y"></block>
           <block type="get_tile_pos_z"></block>
+        </category>
+        <category name="Multiplayer">
+          <block type="get_player_name_entity_id"></block> 
+          <block type="get_player_entity_id"></block> 
+          <block type="get_pos_x_of"></block>
+          <block type="get_pos_y_of"></block>
+          <block type="get_pos_z_of"></block>
+          <block type="set_pos_of"></block>
+          <block type="set_tile_pos_of"></block>
+          <block type="get_tile_pos_x_of"></block>
+          <block type="get_tile_pos_y_of"></block>
+          <block type="get_tile_pos_z_of"></block>
         </category>
         <category name="Materials">
         </category>
