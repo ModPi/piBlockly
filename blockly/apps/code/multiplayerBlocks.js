@@ -44,7 +44,7 @@ Blockly.Blocks['get_player_name_entity_id'] = {
 
 Blockly.Python['get_player_name_entity_id'] = function(block) {
   var value_playerName = Blockly.Python.valueToCode(block, 'playerName', Blockly.Python.ORDER_ATOMIC);
-  var code = 'mc.getPlayerEntityId('+value_playerName+')\n';
+  var code = 'mc.getPlayerEntityId('+value_playerName+')';
   return [code, Blockly.Python.ORDER_NONE];
 };
 
