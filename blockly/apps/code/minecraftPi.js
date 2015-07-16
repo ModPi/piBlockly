@@ -209,6 +209,9 @@ Blockly.Blocks['set_block'] = {
     this.appendValueInput("zCoord")
         .setCheck("Number")
         .appendField("Z Coord:");
+    this.appendValueInput("blockType")
+        .setCheck("Material")
+        .appendField("Block Type");
     this.setNextStatement(true);
     this.setPreviousStatement(true);
     this.setTooltip('Creates a block at the given coordinate!');
@@ -219,6 +222,7 @@ Blockly.Python['set_block'] = function(block) {
   var value_xcoord = Blockly.Python.valueToCode(block, 'xCoord', Blockly.Python.ORDER_ATOMIC);
   var value_ycoord = Blockly.Python.valueToCode(block, 'yCoord', Blockly.Python.ORDER_ATOMIC);
   var value_zcoord = Blockly.Python.valueToCode(block, 'zCoord', Blockly.Python.ORDER_ATOMIC);
+  var value_blockType = Blockly.Python.valueToCode(block, 'blockType', Blockly.Python.ORDER_ATOMIC);
 
   if(!value_xcoord){
     value_xcoord = 0;
@@ -230,7 +234,7 @@ Blockly.Python['set_block'] = function(block) {
     value_zcoord = 0;
   }
 
-  var code = 'mc.setBlock(' + value_xcoord + ', '+value_ycoord + ', ' + value_zcoord + ')\n'
+  var code = 'mc.setBlock(' + value_xcoord + ', '+value_ycoord + ', ' + value_zcoord + ', '+ value_blockType +')\n'
   return code;
 };
 
@@ -251,7 +255,6 @@ Blockly.Blocks['set_blocks'] = {
     this.appendValueInput("zCoord")
         .setCheck("Number")
         .appendField("Z Coord:");
-
     this.appendValueInput("xCoordEnd")
         .setCheck("Number")
         .appendField(" X Coord End:");
@@ -261,6 +264,9 @@ Blockly.Blocks['set_blocks'] = {
     this.appendValueInput("zCoordEnd")
         .setCheck("Number")
         .appendField("Z Coord End:");
+    this.appendValueInput("blockType")
+        .setCheck("Material")
+        .appendField("Block Type");
     this.setNextStatement(true);
     this.setPreviousStatement(true);
     this.setTooltip('Creates a cube of blocks from the first coordinate to the second coordinate.');
@@ -275,6 +281,7 @@ Blockly.Python['set_blocks'] = function(block) {
   var value_xcoord_end = Blockly.Python.valueToCode(block, 'xCoordEnd', Blockly.Python.ORDER_ATOMIC);
   var value_ycoord_end = Blockly.Python.valueToCode(block, 'yCoordEnd', Blockly.Python.ORDER_ATOMIC);
   var value_zcoord_end = Blockly.Python.valueToCode(block, 'zCoordEnd', Blockly.Python.ORDER_ATOMIC);
+  var value_blockType = Blockly.Python.valueToCode(block, 'blockType', Blockly.Python.ORDER_ATOMIC);
 
   if(!value_xcoord){
     value_xcoord = 0;
@@ -294,7 +301,7 @@ Blockly.Python['set_blocks'] = function(block) {
   if(!value_zcoord_end){
     value_zcoord_end = 0;
   }
-  var code = 'mc.setBlocks('+value_xcoord+', '+value_ycoord+', '+value_zcoord+', ' + value_xcoord_end+', '+value_ycoord_end+', '+value_zcoord_end+ ')\n'
+  var code = 'mc.setBlocks('+value_xcoord+', '+value_ycoord+', '+value_zcoord+', ' + value_xcoord_end+', '+value_ycoord_end+', '+value_zcoord_end+ ', '+value_blockType+')\n'
   return code;
 };
 
