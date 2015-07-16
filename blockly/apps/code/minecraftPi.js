@@ -423,3 +423,95 @@ Blockly.Python['autojump_setting'] = function(block) {
   var code = 'mc.player.setting("autojump", '+ value_autojump +')\n';
   return code;
 };
+
+//////
+Blockly.Blocks['camera_set_normal'] = {
+  init: function() {
+    this.appendDummyInput()
+      .appendField("Set Camera View Normal for ");
+    this.appendValueInput("playerToGet")
+        .setCheck("String")
+    this.setNextStatement(true);
+    this.setPreviousStatement(true);
+    this.setTooltip('Sets the camera to normal for a specific player');
+    this.setColour(120);
+    this.setInputsInline(true);
+  }
+};
+
+Blockly.Python['camera_set_normal'] = function(block) {
+  var value_playerToGet = Blockly.Python.valueToCode(block, 'playerToGet', Blockly.Python.ORDER_ATOMIC);
+  var code = 'mc.camera.setNormal('+value_playerToGet+')\n';
+  return code;
+};
+
+//////
+Blockly.Blocks['camera_set_fixed'] = {
+  init: function() {
+    this.appendDummyInput()
+      .appendField("Set Camera View Fixed");
+    this.setNextStatement(true);
+    this.setPreviousStatement(true);
+    this.setTooltip('Sets the camera view to be fixed');
+    this.setColour(120);
+    this.setInputsInline(true);
+  }
+};
+
+Blockly.Python['camera_set_fixed'] = function(block) {
+  var value_autojump = this.getFieldValue('autojump');
+  var code = 'mc.camera.setFixed()\n';
+  return code;
+};
+
+//////
+Blockly.Blocks['camera_set_follow'] = {
+  init: function() {
+    this.appendDummyInput()
+      .appendField("Set Camera to follow ");
+    this.appendValueInput("playerToGet")
+        .setCheck("String")
+    this.setNextStatement(true);
+    this.setPreviousStatement(true);
+    this.setTooltip('Sets the camera to follow a specific player');
+    this.setColour(120);
+    this.setInputsInline(true);
+  }
+};
+
+Blockly.Python['camera_set_follow'] = function(block) {
+  var value_playerToGet = Blockly.Python.valueToCode(block, 'playerToGet', Blockly.Python.ORDER_ATOMIC);
+  var code = 'mc.camera.setFollow('+value_playerToGet+')\n';
+  return code;
+};
+
+//////
+Blockly.Blocks['camera_set_position'] = {
+  init: function() {
+    this.appendDummyInput()
+      .appendField("Set Camera Position to coordinates ");
+    this.appendValueInput("xCoord")
+        .setCheck("Number")
+        .appendField(" X ");
+    this.appendValueInput("yCoord")
+        .setCheck("Number")
+        .appendField("Y ");
+    this.appendValueInput("zCoord")
+        .setCheck("Number")
+        .appendField("Z ");
+    this.setNextStatement(true);
+    this.setPreviousStatement(true);
+    this.setTooltip('Sets the camera to follow a specific player');
+    this.setColour(120);
+    this.setInputsInline(true);
+  }
+};
+
+Blockly.Python['camera_set_position'] = function(block) {
+  var value_xcoord = Blockly.Python.valueToCode(block, 'xCoord', Blockly.Python.ORDER_ATOMIC);
+  var value_ycoord = Blockly.Python.valueToCode(block, 'yCoord', Blockly.Python.ORDER_ATOMIC);
+  var value_zcoord = Blockly.Python.valueToCode(block, 'zCoord', Blockly.Python.ORDER_ATOMIC);
+  var code = 'mc.camera.setPos('+value_xcoord+', '+value_ycoord+', '+value_zcoord+')\n';
+  return code;
+};
+
