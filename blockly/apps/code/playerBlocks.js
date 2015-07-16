@@ -208,4 +208,20 @@ Blockly.Python['set_tile_pos'] = function(block) {
   return code;
 };
 
+//////
+Blockly.Blocks['get_single_player_entity_id'] = {
+  init: function() {
+    this.appendDummyInput()
+      .appendField("Player: ME")
+      this.setInputsInline(true);
+      this.setOutput(true, null);
+      this.setTooltip('Returns the ID of a player');
+      this.setColour(230);
+  }
+};
 
+Blockly.Python['get_single_player_entity_id'] = function(block) {
+  var value_playerNumber = this.getFieldValue('playerNumber');
+  var code = 'mc.getPlayerEntityIds()[0]';
+  return [code, Blockly.Python.ORDER_NONE];
+};
