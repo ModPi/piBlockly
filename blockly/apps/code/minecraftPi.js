@@ -32,7 +32,6 @@ goog.require('Blockly.Blocks');
 Blockly.Blocks['post_to_chat'] = {
   init: function() {
     this.appendValueInput("msgToPost")
-        .setCheck("String")
         .appendField("Message:");
     this.setInputsInline(true);
     this.setPreviousStatement(true);
@@ -316,7 +315,6 @@ Blockly.Blocks['get_height'] = {
     this.setInputsInline(true);
     this.setOutput(true, Number);
     this.setTooltip('Returns the height of the tallest block at the specific X and Y coordinate.');
-    this.setColour(120);
   }
 };
 
@@ -332,45 +330,6 @@ Blockly.Python['get_height'] = function(block) {
   }
 
   var code = 'mc.getHeight('+value_XCoord+', '+value_YCoord+')\n';
-  return [code, Blockly.Python.ORDER_NONE];
-};
-
-//////
-Blockly.Blocks['get_player_name_entity_id'] = {
-  init: function() {
-    this.appendDummyInput()
-      .appendField("Player named:");
-    this.appendValueInput("playerName")
-      .setCheck("String")
-    this.setInputsInline(true);
-    this.setOutput(true, null);
-    this.setTooltip('Returns a specific player');
-    this.setColour(120);
-  }
-};
-
-Blockly.Python['get_player_name_entity_id'] = function(block) {
-  var value_playerName = Blockly.Python.valueToCode(block, 'playerName', Blockly.Python.ORDER_ATOMIC);
-  var code = 'mc.getPlayerEntityId('+value_playerName+')\n';
-  return [code, Blockly.Python.ORDER_NONE];
-};
-
-//////
-Blockly.Blocks['get_player_entity_id'] = {
-  init: function() {
-    this.appendDummyInput()
-      .appendField("Player #:")
-      .appendField(new Blockly.FieldDropdown([['1', '0'], ['2', '1'], ['3', '2'], ['4', '3']]), "playerNumber");
-      this.setInputsInline(true);
-      this.setOutput(true, null);
-      this.setTooltip('Returns a specific player');
-      this.setColour(120);
-  }
-};
-
-Blockly.Python['get_player_entity_id'] = function(block) {
-  var value_playerNumber = this.getFieldValue('playerNumber');
-  var code = 'mc.getPlayerEntityIds()['+value_playerNumber+']\n';
   return [code, Blockly.Python.ORDER_NONE];
 };
 
@@ -443,5 +402,24 @@ Blockly.Blocks['nametag_setting'] = {
 Blockly.Python['nametag_setting'] = function(block) {
   var value_visibleNametags = this.getFieldValue('visibleNametags');
   var code = 'mc.setting("nametags_visible", '+ value_visibleNametags +')\n';
+  return code;
+};
+
+//////
+Blockly.Blocks['autojump_setting'] = {
+  init: function() {
+    this.appendDummyInput()
+      .appendField("Set autojump?")
+      .appendField(new Blockly.FieldDropdown([['True', 'True'], ['False', 'False']]), "autojump");
+    this.setNextStatement(true);
+    this.setPreviousStatement(true);
+    this.setTooltip('Enables / Disables autojump');
+    this.setColour(120);
+  }
+};
+
+Blockly.Python['autojump_setting'] = function(block) {
+  var value_autojump = this.getFieldValue('autojump');
+  var code = 'mc.player.setting("autojump", '+ value_autojump +')\n';
   return code;
 };
