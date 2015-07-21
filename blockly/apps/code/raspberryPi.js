@@ -38,6 +38,7 @@ Blockly.Blocks['print'] = {
     this.setPreviousStatement(true);
     this.setNextStatement(true);
     this.setTooltip('');
+    this.setColour(285);
   }
 };
 
@@ -50,19 +51,24 @@ Blockly.Python['print'] = function(block) {
 
 Blockly.Blocks['input'] = {
   init: function() {
-    this.appendValueInput("message")
+    this.appendValueInput("pinNumber")
         .setCheck("Number")
-        .appendField("Input ");
+        .appendField("Read Pin#");
     this.setInputsInline(true);
     this.setTooltip('');
-    this.setOutput(true, Boolean);
+    this.setOutput(true, "Boolean");
+    this.setColour(285);
   }
 };
 
 Blockly.Python['input'] = function(block) {
+  Blockly.Python.definitions_['import_gpio'] = 'import RPi.GPIO as GPIO\n'
   var valueNum = Blockly.Python.valueToCode(block, 'message', Blockly.Python.ORDER_ATOMIC);
-  Blockly.Python.definitions_['define_setMode'] = 'GPIO.setmode(' + valueNum + ')\n'
-  var code = 'GPIO.input('+valueNum+')\n';
+  var value_pinNumber = Blockly.Python.valueToCode(block, 'pinNumber', Blockly.Python.ORDER_ATOMIC);
+  var code = 'GPIO.input('+value_pinNumber+')';
+
+  Blockly.Python.definitions_['iz_gpio'] = 'GPIO.setmode(GPIO.BCM)';
+  Blockly.Python.definitions_['setMode_'+value_pinNumber] = 'GPIO.setup('+value_pinNumber+', GPIO.IN)';
   return [code, Blockly.Python.ORDER_NONE];
 };
 
@@ -76,16 +82,45 @@ Blockly.Blocks['sleep_time'] = {
     this.setPreviousStatement(true);
     this.setNextStatement(true);
     this.setTooltip('');
+    this.setColour(285);
   }
 };
 
 Blockly.Python['sleep_time'] = function(block) {
-  Blockly.Python.definitions_['import_time'] = 'import time as time\n'
+  Blockly.Python.definitions_['import_time'] = 'import time as time'
   var valueNum = Blockly.Python.valueToCode(block, 'num', Blockly.Python.ORDER_ATOMIC);
   if(!valueNum){
     valueNum = 0;
   }
-  var code = 'time.sleep('+valueNum+');\n';
+  var code = 'time.sleep('+valueNum+')\n';
+  return code;
+};
+
+/////////
+Blockly.Blocks['output'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("Output")
+        .appendField(new Blockly.FieldDropdown([['HIGH', 'GPIO.HIGH'], ['LOW', 'GPIO.LOW']]), 'outputType');
+    this.appendValueInput("pinNumber")
+        .appendField("on Pin# ")
+        .setCheck("Number");
+    this.setInputsInline(true);
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+    this.setTooltip('');
+    this.setColour(285);
+  }
+};
+
+Blockly.Python['output'] = function(block) {
+  var value_outputType = this.getFieldValue('outputType');
+  var value_pinNumber = Blockly.Python.valueToCode(block, 'pinNumber', Blockly.Python.ORDER_ATOMIC);
+  var code = 'GPIO.output('+value_pinNumber+', '+value_outputType+')\n';
+
+  Blockly.Python.definitions_['import_gpio'] = 'import RPi.GPIO as GPIO';
+  Blockly.Python.definitions_['iz_gpio'] = 'GPIO.setmode(GPIO.BCM)';
+  Blockly.Python.definitions_['setMode_'+value_pinNumber] = 'GPIO.setup('+value_pinNumber+', GPIO.OUT)';
   return code;
 };
 
