@@ -53,7 +53,6 @@ Blockly.Blocks['get_block'] = {
     this.setHelpUrl('http://www.example.com/');
     this.appendDummyInput()
         .appendField("Get Block");
-    this.setInputsInline(true);
     this.appendValueInput("xCoord")
         .setCheck("Number")
         .appendField(" X Coord:");
@@ -92,21 +91,18 @@ Blockly.Blocks['get_blocks'] = {
     this.setHelpUrl('http://www.example.com/');
     this.appendDummyInput()
         .appendField("Get Cube of Blocks");
-    this.setInputsInline(true);
-
     this.appendValueInput("xCoord")
         .setCheck("Number")
-        .appendField(" X Coord:");
+        .appendField("X Coord:");
     this.appendValueInput("yCoord")
         .setCheck("Number")
         .appendField("Y Coord:");
     this.appendValueInput("zCoord")
         .setCheck("Number")
         .appendField("Z Coord:");
-
     this.appendValueInput("xCoordEnd")
         .setCheck("Number")
-        .appendField(" X Coord End:");
+        .appendField("X Coord End:");
     this.appendValueInput("yCoordEnd")
         .setCheck("Number")
         .appendField("Y Coord End:");
@@ -155,8 +151,6 @@ Blockly.Blocks['get_block_with_data'] = {
     this.setHelpUrl('http://www.example.com/');
     this.appendDummyInput()
         .appendField("Get Block with Data");
-    this.setInputsInline(true);
-
     this.appendValueInput("xCoord")
         .setCheck("Number")
         .appendField(" X Coord:");
@@ -166,7 +160,6 @@ Blockly.Blocks['get_block_with_data'] = {
     this.appendValueInput("zCoord")
         .setCheck("Number")
         .appendField("Z Coord:");
-
     this.setOutput(true, Number);
     this.setTooltip('Gets the block type at a given coordinate with it\'s data!');
   }
@@ -198,8 +191,6 @@ Blockly.Blocks['set_block'] = {
     this.setHelpUrl('http://www.example.com/');
     this.appendDummyInput()
         .appendField("Create Block");
-    this.setInputsInline(true);
-
     this.appendValueInput("xCoord")
         .setCheck("Number")
         .appendField(" X Coord:");
@@ -244,11 +235,9 @@ Blockly.Blocks['set_blocks'] = {
     this.setHelpUrl('http://www.example.com/');
     this.appendDummyInput()
         .appendField("Create Cube of Blocks");
-    this.setInputsInline(true);
-
     this.appendValueInput("xCoord")
         .setCheck("Number")
-        .appendField(" X Coord:");
+        .appendField("X Coord:");
     this.appendValueInput("yCoord")
         .setCheck("Number")
         .appendField("Y Coord:");
@@ -257,7 +246,7 @@ Blockly.Blocks['set_blocks'] = {
         .appendField("Z Coord:");
     this.appendValueInput("xCoordEnd")
         .setCheck("Number")
-        .appendField(" X Coord End:");
+        .appendField("X Coord End:");
     this.appendValueInput("yCoordEnd")
         .setCheck("Number")
         .appendField("Y Coord End:");
