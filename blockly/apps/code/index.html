@@ -9,6 +9,8 @@
   <script type="text/javascript" src="../_soy/soyutils.js"></script>
   <script type="text/javascript" src="../common.js"></script>
   <script type="text/javascript" src="code.js"></script>
+  <script type="text/javascript" src="blob.js"></script>
+  <script type="text/javascript" src="fileSaver.js"></script>
   <script type="text/javascript" src="../../appengine/storage.js"></script>
   <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
 
@@ -45,6 +47,6 @@
           {lang: BlocklyApps.LANG,
            langSrc: BlocklyApps.languagePack()}));
   </script>
-  <button id='copy_code' onclick='codeToClipboard()' style='position:absolute; bottom:20px; left: 40%; background-color:rgba(200,200,200,0.5);' hidden>Code to Clipboard</button>
+<button id='copy_code' onclick='downloadCode()' style='position:absolute; bottom:60px; left: 40%; background-color:rgba(200,200,200,0.5);' hidden>Download Code</button>
 </body>
 </html>

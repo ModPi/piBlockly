@@ -100,6 +100,15 @@ function codeToClipboard() {
   window.prompt("Your code is hightlighted!\nCopy to your clipboard by Ctrl+C, or Cmnd+C (mac)\npush Enter to close the dialog", Blockly.Python.workspaceToCodeAlpha());
 }
 
+function downloadCode() {
+  var fileName = window.prompt("What would you like to name your file?", "myMod")
+  fileName = fileName + ".py";
+  console.log(fileName);
+  var blob = new Blob([Blockly.Python.workspaceToCodeAlpha()], {type: "text/plain;charset=utf-8"});
+  saveAs(blob, fileName);
+  console.log("Saved");
+}
+
 function addLineNumbers(content) {
   content = content.split('\n');
   for(var i = 0; i < content.length; i++) {
