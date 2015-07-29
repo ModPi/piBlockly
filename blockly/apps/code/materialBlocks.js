@@ -139,7 +139,7 @@ Blockly.Blocks['material_sapling'] = {
 
 Blockly.Python['material_sapling'] = function(block) {
   var value_saplingType = this.getFieldValue('saplingType');
-  var code = 'block.Block(6), '+value_saplingType;
+  var code = 'block.Block(6, '+value_saplingType+')';
   return [code, Blockly.Python.ORDER_NONE];
 };
 
@@ -318,7 +318,7 @@ Blockly.Blocks['material_wood'] = {
 
 Blockly.Python['material_wood'] = function(block) {
   var value_woodType = this.getFieldValue('woodType');
-  var code = 'block.Block(17), '+value_woodType;
+  var code = 'block.Block(17, '+value_woodType+')';
   return [code, Blockly.Python.ORDER_NONE];
 };
 
@@ -449,7 +449,7 @@ Blockly.Blocks['material_grass_tall'] = {
 
 Blockly.Python['material_grass_tall'] = function(block) {
   var value_grass_tallType = this.getFieldValue('grass_tallType');
-  var code = 'block.Block(31), '+value_grass_tallType;
+  var code = 'block.Block(31, '+value_grass_tallType+')';
   return [code, Blockly.Python.ORDER_NONE];
 };
 
@@ -474,7 +474,7 @@ Blockly.Blocks['material_wool'] = {
 
 Blockly.Python['material_wool'] = function(block) {
   var value_woolColor = this.getFieldValue('woolColor');
-  var code = 'block.Block(35), '+value_woolColor;
+  var code = 'block.Block(35, '+value_woolColor+')';
   return [code, Blockly.Python.ORDER_NONE];
 };
 
@@ -590,7 +590,7 @@ Blockly.Blocks['material_stone_slab_double'] = {
 
 Blockly.Python['material_stone_slab_double'] = function(block) {
   var value_stone_slabType = this.getFieldValue('stone_slabType');
-  var code = 'block.Block(43), '+value_stone_slabType;
+  var code = 'block.Block(43, '+value_stone_slabType+')';
   return [code, Blockly.Python.ORDER_NONE];
 };
 
@@ -610,7 +610,7 @@ Blockly.Blocks['material_stone_slab'] = {
 
 Blockly.Python['material_stone_slab'] = function(block) {
   var value_stone_slabType = this.getFieldValue('stone_slabType');
-  var code = 'block.Block(44), '+value_stone_slabType;
+  var code = 'block.Block(44, '+value_stone_slabType+')';
   return [code, Blockly.Python.ORDER_NONE];
 };
 
@@ -644,7 +644,7 @@ Blockly.Blocks['material_tnt'] = {
 
 Blockly.Python['material_tnt'] = function(block) {
   var value_tntType = this.getFieldValue('tntType');
-  var code = 'block.Block(46), '+value_tntType;
+  var code = 'block.Block(46, '+value_tntType+')';
   return [code, Blockly.Python.ORDER_NONE];
 };
 
@@ -728,7 +728,7 @@ Blockly.Blocks['material_torch'] = {
 
 Blockly.Python['material_torch'] = function(block) {
   var value_torchType = this.getFieldValue('torchType');
-  var code = 'block.Block(50), '+value_torchType;
+  var code = 'block.Block(50, '+value_torchType+')';
   return [code, Blockly.Python.ORDER_NONE];
 };
 
@@ -1115,7 +1115,7 @@ Blockly.Blocks['material_stone_brick'] = {
 
 Blockly.Python['material_stone_brick'] = function(block) {
   var value_stone_brickType = this.getFieldValue('stone_brickType');
-  var code = 'block.Block(98), '+value_stone_brickType;
+  var code = 'block.Block(98, '+value_stone_brickType+')';
   return [code, Blockly.Python.ORDER_NONE];
 };
 
