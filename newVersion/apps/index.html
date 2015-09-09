@@ -1,0 +1,456 @@
+<html manifest=node.manifest>
+<head>
+  <meta charset="utf-8">
+  <title>BlocklyDuino</title>
+  <script type="text/javascript" src="../blockly_compressed.js"></script>
+  <script type="text/javascript" src="../blocks_compressed.js"></script>
+  <script type="text/javascript" src="../python_compressed.js"></script>
+  <script type="text/javascript" src="../msg/js/en.js"></script>
+  <script type="text/javascript" src="Blob.js"></script>
+  <script type="text/javascript" src="spin.js"></script>
+  <script type="text/javascript" src="FileSaver.min.js"></script>
+  <script type="text/javascript" src="blockly_helper.js"></script>
+  <script>
+
+/**
+ * List of tab names.
+ * @private
+ */
+var TABS_ = ['blocks', 'python'];
+
+var selected = 'blocks';
+
+/**
+ * Switch the visible pane when a tab is clicked.
+ * @param {string} clickedName Name of tab clicked.
+ */
+function tabClick(clickedName) {
+  if (document.getElementById('tab_blocks').className == 'tabon') {
+    Blockly.mainWorkspace.setVisible(false);
+  }
+  // Deselect all tabs and hide all panes.
+  for (var i = 0; i < TABS_.length; i++) {
+    var name = TABS_[i];
+    document.getElementById('tab_' + name).className = 'taboff';
+    document.getElementById('content_' + name).style.visibility = 'hidden';
+  }
+
+ // Select the active tab.
+  selected = clickedName;
+  document.getElementById('tab_' + clickedName).className = 'tabon';
+  // Show the selected pane.
+  document.getElementById('content_' + clickedName).style.visibility =
+      'visible';
+  renderContent();
+  if (clickedName == 'blocks') {
+    Blockly.mainWorkspace.setVisible(true);
+  }
+  Blockly.fireUiEvent(window, 'resize');
+}
+
+/**
+ * Populate the currently selected pane with content generated from the blocks.
+ */
+function renderContent() {
+  var content = document.getElementById('content_' + selected);
+  // Initialize the pane.
+  if (content.id == 'content_blocks') {
+    // If the workspace was changed by the XML tab, Firefox will have performed
+    // an incomplete rendering due to Blockly being invisible.  Rerender.
+    Blockly.mainWorkspace.render();
+  } else if (content.id == 'content_xml') {
+    var xmlTextarea = document.getElementById('content_xml');
+    var xmlDom = Blockly.Xml.workspaceToDom(Blockly.mainWorkspace);
+    var xmlText = Blockly.Xml.domToPrettyText(xmlDom);
+    xmlTextarea.value = xmlText;
+    xmlTextarea.focus();
+  /*} else if (content.id == 'content_javascript') {
+    content.innerHTML = Blockly.JavaScript.workspaceToCode();
+  } else if (content.id == 'content_dart') {
+    content.innerHTML = Blockly.Dart.workspaceToCode();
+  } else if (content.id == 'content_python') {
+    content.innerHTML = Blockly.Python.workspaceToCode();*/
+  } else if (content.id == 'content_python') {
+    //content.innerHTML = Blockly.Arduino.workspaceToCode();
+    var pythonTextarea = document.getElementById('content_python');
+    pythonTextarea.value = Blockly.Python.workspaceToCode();
+    pythonTextarea.focus();
+  }
+}
+
+/**
+ * Compute the absolute coordinates and dimensions of an HTML element.
+ * @param {!Element} element Element to match.
+ * @return {!Object} Contains height, width, x, and y properties.
+ * @private
+ */
+function getBBox_(element) {
+  var height = element.offsetHeight;
+  var width = element.offsetWidth;
+  var x = 0;
+  var y = 0;
+  do {
+    x += element.offsetLeft;
+    y += element.offsetTop;
+    element = element.offsetParent;
+  } while (element);
+  return {
+    height: height,
+    width: width,
+    x: x,
+    y: y
+  };
+}
+
+/**
+ * Initialize Blockly.  Called on page load.
+ */
+function init() {
+  //window.onbeforeunload = function() {
+  //  return 'Leaving this page will result in the loss of your work.';
+  //};
+
+  var container = document.getElementById('content_area');
+  var onresize = function(e) {
+    var bBox = getBBox_(container);
+    for (var i = 0; i < TABS_.length; i++) {
+      var el = document.getElementById('content_' + TABS_[i]);
+      el.style.top = bBox.y + 'px';
+      el.style.left = bBox.x + 'px';
+      // Height and width need to be set, read back, then set again to
+      // compensate for scrollbars.
+      el.style.height = bBox.height + 'px';
+      el.style.height = (2 * bBox.height - el.offsetHeight) + 'px';
+      el.style.width = bBox.width + 'px';
+      el.style.width = (2 * bBox.width - el.offsetWidth) + 'px';
+    }
+    // Make the 'Blocks' tab line up with the toolbox.
+    if (Blockly.mainWorkspace.toolbox_.width) {
+      document.getElementById('tab_blocks').style.minWidth =
+          (Blockly.mainWorkspace.toolbox_.width - 38) + 'px';
+          // Account for the 19 pixel margin and on each side.
+    }
+  };
+  window.addEventListener('resize', onresize, false);
+
+  var toolbox = document.getElementById('toolbox');
+  Blockly.inject(document.getElementById('content_blocks'),
+      {grid:
+          {spacing: 25,
+           length: 3,
+           colour: '#ccc',
+           snap: true},
+       media: '../media/',
+       toolbox: toolbox});
+
+  auto_save_and_restore_blocks();
+
+  //load from url parameter (single param)
+  //http://stackoverflow.com/questions/2090551/parse-query-string-in-javascript
+  var dest = unescape(location.search.replace(/^.*\=/, '')).replace(/\+/g, " ");
+  if(dest){
+    load_by_url(dest);
+  }
+}
+  </script>
+  <style>
+    html, body {
+      height: 100%;
+    }
+    body {
+      background-color: #fff;
+      font-family: sans-serif;
+      margin: 0;
+      overflow: hidden;
+    }
+    h1 {
+      font-weight: normal;
+      font-size: 140%;
+      margin-left: 5px;
+      margin-right: 5px;
+    }
+
+    /* Tabs */
+    #tabRow>td {
+      border: 1px solid #ccc;
+    }
+    td.tabon {
+      border-bottom-color: #ddd !important;
+      background-color: #ddd;
+      padding: 5px 19px;
+    }
+    td.taboff {
+      cursor: pointer;
+      padding: 5px 19px;
+    }
+    td.taboff:hover {
+      background-color: #eee;
+    }
+    td.tabmin {
+      border-top-style: none !important;
+      border-left-style: none !important;
+      border-right-style: none !important;
+    }
+    td.tabmax {
+      border-top-style: none !important;
+      border-left-style: none !important;
+      border-right-style: none !important;
+      width: 99%;
+      text-align: right;
+    }
+
+    table {
+      border-collapse: collapse;
+      margin: 0;
+      padding: 0;
+      border: none;
+    }
+    td {
+      padding: 0;
+      vertical-align: top;
+    }
+    .content {
+      visibility: hidden;
+      margin: 0;
+      padding: 1ex;
+      position: absolute;
+      direction: ltr;
+    }
+    pre.content {
+      overflow: scroll;
+    }
+    #content_blocks {
+      padding: 0;
+    }
+    .blocklySvg {
+      border-top: none !important;
+    }
+    #content_xml {
+      resize: none;
+      outline: none;
+      border: none;
+      font-family: monospace;
+      overflow: scroll;
+    }
+    button {
+      padding: 1px 1em;
+      font-size: 90%;
+      border-radius: 4px;
+      border: 1px solid #ddd;
+      background-color: #eee;
+      color: black;
+    }
+    button.launch {
+      border: 1px solid #d43;
+      background-color: #d43;
+      color: white;
+    }
+    button:active {
+      border: 1px solid blue !important;
+    }
+    button:hover {
+      box-shadow: 2px 2px 5px #888;
+    }
+  </style>
+</head>
+<body onload="init()">
+  <table height="100%" width="100%">
+    <tr>
+      <td>
+        <h1>PiBlockly Version 2.0</h1>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <table width="100%">
+          <tr id="tabRow" height="1em">
+            <td id="tab_blocks" class="tabon" onclick="tabClick('blocks')">Blocks</td>
+            <td class="tabmin">&nbsp;</td>
+            <td id="tab_python" class="taboff" onclick="tabClick('python')">Python</td>
+            <td class="tabmin">&nbsp;</td>
+            <td class="tabmax">
+              <button onclick="saveCode()">Download Mod</button>
+              <button onclick="discard()">Delete All Blocks</button>
+              <input type="file" id="load" style="display: none;"/>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr>
+      <td height="99%" id="content_area"></td>
+    </tr>
+  </table>
+  <div id="content_blocks" class="content"></div>
+  <textarea id="content_python" class="content" readonly wrap="off"></textarea>
+
+  <xml id="toolbox" style="display: none">
+      <category name="Game"> 
+          <block type="post_to_chat"></block>
+          <block type="immutable_setting"></block>
+          <block type="nametag_setting"></block>
+          <block type="autojump_setting"></block>
+          <block type="camera_set_normal"></block>
+          <block type="camera_set_fixed"></block>
+          <block type="camera_set_follow"></block>
+          <block type="camera_set_position"></block>
+          <block type="save_checkpoint"></block> 
+          <block type="restore_checkpoint"></block>
+      </category>
+      <category name="Blocks">
+        <block type="get_block"></block>
+        <block type="get_blocks"></block>
+        <block type="get_block_with_data"></block>
+        <block type="set_block"></block>
+        <block type="set_blocks"></block>
+        <block type="get_height"></block>
+      </category>
+      <category name="Player">
+        <block type="get_single_player_entity_id"></block>
+        <block type="get_pos_x"></block>
+        <block type="get_pos_y"></block>
+        <block type="get_pos_z"></block>
+        <block type="set_pos"></block>
+        <block type="set_tile_pos"></block>
+        <block type="get_tile_pos_x"></block>
+        <block type="get_tile_pos_y"></block>
+        <block type="get_tile_pos_z"></block>
+      </category>
+      <category name="Multiplayer">
+        <block type="get_player_name_entity_id"></block> 
+        <block type="get_player_entity_id"></block> 
+        <block type="get_pos_x_of"></block>
+        <block type="get_pos_y_of"></block>
+        <block type="get_pos_z_of"></block>
+        <block type="set_pos_of"></block>
+        <block type="set_tile_pos_of"></block>
+        <block type="get_tile_pos_x_of"></block>
+        <block type="get_tile_pos_y_of"></block>
+        <block type="get_tile_pos_z_of"></block>
+      </category>
+    <category name="Raspberry Pi">
+        <block type="input"></block>
+        <block type="output"></block>
+        <block type="sleep_time"></block>
+        <block type="print"></block>
+    </category>
+    <category name="Logic">
+      <block type="controls_if"></block>
+      <block type="logic_compare"></block>
+      <block type="logic_operation"></block>
+      <block type="logic_negate"></block>
+      <block type="logic_null"></block>
+      <block type="logic_boolean"></block>
+    </category>
+    <category name="Control">
+      <block type="controls_for">
+        <value name="FROM">
+          <block type="math_number">
+            <field name="NUM">1</field>
+          </block>
+        </value>
+        <value name="TO">
+          <block type="math_number">
+            <field name="NUM">10</field>
+          </block>
+        </value>
+      </block>
+      <block type="controls_whileUntil"></block>
+      <block type= "controls_flow_statements"></block>
+    </category>
+    <category name="Math">
+      <block type="math_number"></block>
+      <block type="math_arithmetic"></block>
+    </category>
+    <category name="Text">
+      <block type="text"></block>
+    </category>
+    <category name="Variables" custom="VARIABLE"></category>
+    <category name="Functions" custom="PROCEDURE"></category>
+    <sep></sep>
+    <category name="Materials">
+        <category name="A-C"> // a b c
+          <block type="material_air"></block>
+          <block type="material_bed"></block>
+          <block type="material_bedrock"></block>
+          <block type="material_bedrock_invisible"></block>
+          <block type="material_bookshelf"></block>
+          <block type="material_brick_block"></block>
+          <block type="material_cactus"></block>
+          <block type="material_chest"></block>
+          <block type="material_clay"></block>
+          <block type="material_coal_ore"></block>
+          <block type="material_cobblestone"></block>
+          <block type="material_cobweb"></block>
+          <block type="material_crafting_table"></block>
+        </category>
+        <category name="D-G"> //d e f g
+          <block type="material_diamond_block"></block>
+          <block type="material_diamond_ore"></block>
+          <block type="material_dirt"></block>
+          <block type="material_door_iron"></block>
+          <block type="material_door_wood"></block>
+          <block type="material_farmland"></block>
+          <block type="material_fence"></block>
+          <block type="material_fence_gate"></block>
+          <block type="material_fire"></block>
+          <block type="material_flower_cyan"></block>
+          <block type="material_flower_yellow"></block>
+          <block type="material_furnace_active"></block>
+          <block type="material_furnace_inactive"></block>
+          <block type="material_glass"></block>
+          <block type="material_glass_pane"></block>
+          <block type="material_glowing_obsidian"></block>
+          <block type="material_glowstone_block"></block>
+          <block type="material_gold_block"></block>
+          <block type="material_gold_ore"></block>
+          <block type="material_grass"></block>
+          <block type="material_grass_tall"></block>
+          <block type="material_gravel"></block>
+        </category>
+        <category name="H-M"> //h i j k l m 
+          <block type="material_ice"></block>
+          <block type="material_iron_block"></block>
+          <block type="material_iron_ore"></block>
+          <block type="material_ladder"></block>
+          <block type="material_lapis_lazuli_block"></block>
+          <block type="material_lapis_lazuli_ore"></block>
+          <block type="material_lava_flowing"></block>
+          <block type="material_lava_stationary"></block>
+          <block type="material_leaves"></block>
+          <block type="material_melon"></block>
+          <block type="material_moss_stone"></block>
+          <block type="material_mushroom_brown"></block>
+          <block type="material_mushroom_red"></block>
+        </category>
+        <category name="N-R"> //n o p q r
+          <block type="material_nether_reactor_core"></block>
+          <block type="material_obsidian"></block>
+          <block type="material_redstone_ore"></block>
+        </category>
+        <category name="S-Z"> //s t u v w x y z
+          <block type="material_sand"></block>
+          <block type="material_sandstone"></block>
+          <block type="material_sapling"></block>
+          <block type="material_snow"></block>
+          <block type="material_snow_block"></block>
+          <block type="material_stairs_cobblestone"></block>
+          <block type="material_stairs_wood"></block>
+          <block type="material_stone"></block>
+          <block type="material_stone_brick"></block>
+          <block type="material_stone_slab"></block>
+          <block type="material_stone_slab_double"></block>
+          <block type="material_sugar_cane"></block>
+          <block type="material_tnt"></block>
+          <block type="material_torch"></block>
+          <block type="material_water_flowing"></block>
+          <block type="material_water_stationary"></block>
+          <block type="material_wood"></block>
+          <block type="material_wood_planks"></block>
+          <block type="material_wool"></block>
+        </category>
+    </category>
+    <sep></sep>
+  </xml>
+</body>
+</html>
