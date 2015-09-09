@@ -130,6 +130,7 @@ var saveAs = saveAs || (function(view) {
 				save_link.href = object_url;
 				save_link.download = name;
 				setTimeout(function() {
+					console.log(save_link);
 					click(save_link);
 					dispatch_all();
 					revoke(object_url);
