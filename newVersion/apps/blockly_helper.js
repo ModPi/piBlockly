@@ -39,7 +39,7 @@ function saveCode() {
   //doesn't save if the user quits the save prompt
   if(fileName){
     var blob = new Blob([Blockly.Python.workspaceToCode()], {type: 'text/plain;charset=utf-8'});
-    saveAs(blob, fileName + '.py');
+    saveAs(blob, fileName + '.txt');
   }
 }
 
