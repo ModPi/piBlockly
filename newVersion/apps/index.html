@@ -2,6 +2,17 @@
 <head>
   <meta charset="utf-8">
   <title>BlocklyDuino</title>
+  						<!-- For Local Host -->
+  <script type="text/javascript" src="../blockly_compressed.js"></script>
+  <script type="text/javascript" src="../blocks_compressed.js"></script>
+  <script type="text/javascript" src="../python_compressed.js"></script>
+  <script type="text/javascript" src="../msg/js/en.js"></script>
+  <script type="text/javascript" src="Blob.js"></script>
+  <script type="text/javascript" src="spin.js"></script>
+  <script type="text/javascript" src="FileSaver.min.js"></script>
+  <script type="text/javascript" src="blockly_helper.js"></script>
+                        <!-- For Server -->
+  <!--
   <script type="text/javascript" src="./blockly_compressed.js"></script>
   <script type="text/javascript" src="./blocks_compressed.js"></script>
   <script type="text/javascript" src="./python_compressed.js"></script>
@@ -10,13 +21,14 @@
   <script type="text/javascript" src="./apps/spin.js"></script>
   <script type="text/javascript" src="./apps/FileSaver.min.js"></script>
   <script type="text/javascript" src="./apps/blockly_helper.js"></script>
+  -->
   <script>
 
 /**
  * List of tab names.
  * @private
  */
-var TABS_ = ['blocks', 'python'];
+var TABS_ = ['blocks','mods', 'python'];
 
 var selected = 'blocks';
 
@@ -28,6 +40,7 @@ function tabClick(clickedName) {
   if (document.getElementById('tab_blocks').className == 'tabon') {
     Blockly.mainWorkspace.setVisible(false);
   }
+
   // Deselect all tabs and hide all panes.
   for (var i = 0; i < TABS_.length; i++) {
     var name = TABS_[i];
@@ -47,6 +60,7 @@ function tabClick(clickedName) {
   }
   Blockly.fireUiEvent(window, 'resize');
 }
+
 
 /**
  * Populate the currently selected pane with content generated from the blocks.
@@ -266,6 +280,8 @@ function init() {
           <tr id="tabRow" height="1em">
             <td id="tab_blocks" class="tabon" onclick="tabClick('blocks')">Blocks</td>
             <td class="tabmin">&nbsp;</td>
+            <td id="tab_mods" class="taboff" onclick="tabClick('mods')">My Mods</td>
+            <td class="tabmin">&nbsp;</td>
             <td id="tab_python" class="taboff" onclick="tabClick('python')">Python</td>
             <td class="tabmin">&nbsp;</td>
             <td class="tabmax">
@@ -282,6 +298,7 @@ function init() {
     </tr>
   </table>
   <div id="content_blocks" class="content"></div>
+  <textarea id="content_mods" class="content" readonly wrap="off"></textarea>
   <textarea id="content_python" class="content" readonly wrap="off"></textarea>
 
   <xml id="toolbox" style="display: none">
