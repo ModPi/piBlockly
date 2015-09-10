@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="google" value="notranslate">
+  <title>Blockly : Code</title>
+  <link rel="stylesheet" type="text/css" href="../common.css">
+  <link rel="stylesheet" type="text/css" href="style.css">
+  <script type="text/javascript" src="../_soy/soyutils.js"></script>
+  <script type="text/javascript" src="../common.js"></script>
+  <script type="text/javascript" src="code.js"></script>
+  <script type="text/javascript" src="Blob.js"></script>
+  <script type="text/javascript" src="FileSaver.js"></script>
+  <script type="text/javascript" src="../../appengine/storage.js"></script>
+  <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+
+    <script>
+      function init() {
+        if(window.parent && window.parent.blocklyLoaded)
+          window.parent.blocklyLoaded(Blockly);
+
+        if(window.top && window.top != window.parent && window.top.blocklyLoaded)
+          window.top.blocklyLoaded(Blockly);
+
+        if(top == window && document.getElementById("instructions"))
+          document.getElementById("instructions").style.display="block"
+      }
+    </script>
+    <style>
+      body{
+        margin: 0px;
+        padding: 0px;
+      }
+
+      #simulator{
+
+      }
+
+      .blocklyPathLight{ display: none }
+      .blocklyPathDark{ display: none }
+      .blocklyIconShield{ display: none }
+    </style>
+</head>
+<body onload="init()">
+  <script type="text/javascript">
+      document.write(codepage.start({}, null,
+          {lang: BlocklyApps.LANG,
+           langSrc: BlocklyApps.languagePack()}));
+  </script>
+<button id='copy_code' onclick='downloadCode()' style='position:absolute; bottom:60px; left: 40%; background-color:rgba(200,200,200,0.5);' hidden>Download Code</button>
+</body>
+</html>
