@@ -3,7 +3,7 @@
  * Visual Blocks Editor
  *
  * Copyright 2012 Google Inc.
- * https://blockly.googlecode.com/
+ * https://developers.google.com/blockly/
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -69,7 +69,7 @@ Blockly.Input.prototype.appendField = function(field, opt_name) {
   if (goog.isString(field)) {
     field = new Blockly.FieldLabel(/** @type {string} */ (field));
   }
-  if (this.sourceBlock_.svg_) {
+  if (this.sourceBlock_.rendered) {
     field.init(this.sourceBlock_);
   }
   field.name = opt_name;
@@ -102,7 +102,7 @@ Blockly.Input.prototype.appendField = function(field, opt_name) {
  * @deprecated December 2013
  */
 Blockly.Input.prototype.appendTitle = function(field, opt_name) {
-  console.log('Deprecated call to appendTitle, use appendField instead.');
+  console.warn('Deprecated call to appendTitle, use appendField instead.');
   return this.appendField(field, opt_name);
 };
 
@@ -137,6 +137,7 @@ Blockly.Input.prototype.isVisible = function() {
 
 /**
  * Sets whether this input is visible or not.
+ * Used to collapse/uncollapse a block.
  * @param {boolean} visible True if visible.
  * @return {!Array.<!Blockly.Block>} List of blocks to render.
  */
@@ -160,7 +161,7 @@ Blockly.Input.prototype.setVisible = function(visible) {
     }
     var child = this.connection.targetBlock();
     if (child) {
-      child.svg_.getRootElement().style.display = display;
+      child.getSvgRoot().style.display = display;
       if (!visible) {
         child.rendered = false;
       }
@@ -201,6 +202,9 @@ Blockly.Input.prototype.setAlign = function(align) {
  * Initialize the fields on this input.
  */
 Blockly.Input.prototype.init = function() {
+  if (!this.sourceBlock_.workspace.rendered) {
+    return;  // Headless blocks don't need fields initialized.
+  }
   for (var x = 0; x < this.fieldRow.length; x++) {
     this.fieldRow[x].init(this.sourceBlock_);
   }

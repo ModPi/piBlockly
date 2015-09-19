@@ -3,7 +3,7 @@
  * Visual Blocks Language
  *
  * Copyright 2012 Google Inc.
- * https://blockly.googlecode.com/
+ * https://developers.google.com/blockly/
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,6 +29,10 @@ goog.provide('Blockly.Python');
 goog.require('Blockly.Generator');
 
 
+/**
+ * Python code generator.
+ * @type !Blockly.Generator
+ */
 Blockly.Python = new Blockly.Generator('Python');
 
 /**
@@ -76,39 +80,35 @@ Blockly.Python.ORDER_LAMBDA = 16;           // lambda
 Blockly.Python.ORDER_NONE = 99;             // (...)
 
 /**
- * Arbitrary code to inject into locations that risk causing infinite loops.
- * Any instances of '%1' will be replaced by the block ID that failed.
- * E.g. '  checkTimeout(%1)\n'
- * @type ?string
+ * Empty loops or conditionals are not allowed in Python.
  */
-Blockly.Python.INFINITE_LOOP_TRAP = null;
+Blockly.Python.PASS = '  pass\n';
 
 /**
  * Initialise the database of variable names.
+ * @param {!Blockly.Workspace} workspace Workspace to generate code from.
  */
-Blockly.Python.init = function() {
+Blockly.Python.init = function(workspace) {
   // Create a dictionary of definitions to be printed before the code.
   Blockly.Python.definitions_ = Object.create(null);
   // Create a dictionary mapping desired function names in definitions_
   // to actual function names (to avoid collisions with user functions).
   Blockly.Python.functionNames_ = Object.create(null);
 
-  if (Blockly.Variables) {
-    if (!Blockly.Python.variableDB_) {
-      Blockly.Python.variableDB_ =
-          new Blockly.Names(Blockly.Python.RESERVED_WORDS_);
-    } else {
-      Blockly.Python.variableDB_.reset();
-    }
-
-    var defvars = [];
-    var variables = Blockly.Variables.allVariables();
-    for (var x = 0; x < variables.length; x++) {
-      defvars[x] = Blockly.Python.variableDB_.getName(variables[x],
-          Blockly.Variables.NAME_TYPE) + ' = None';
-    }
-    Blockly.Python.definitions_['variables'] = defvars.join('\n');
+  if (!Blockly.Python.variableDB_) {
+    Blockly.Python.variableDB_ =
+        new Blockly.Names(Blockly.Python.RESERVED_WORDS_);
+  } else {
+    Blockly.Python.variableDB_.reset();
   }
+
+  var defvars = [];
+  var variables = Blockly.Variables.allVariables(workspace);
+  for (var i = 0; i < variables.length; i++) {
+    defvars[i] = Blockly.Python.variableDB_.getName(variables[i],
+        Blockly.Variables.NAME_TYPE) + ' = None';
+  }
+  Blockly.Python.definitions_['variables'] = defvars.join('\n');
 };
 
 /**
@@ -129,7 +129,7 @@ Blockly.Python.finish = function(code) {
     }
   }
   var allDefs = 'import mcpi.minecraft as minecraft\nimport mcpi.block as block\n\n' + imports.join('\n') + '\n\n' + definitions.join('\n\n') + '\n\nmc = minecraft.Minecraft.create()\n' + '\n\n';
-  return allDefs.replace(/\n\n+/g, '\n\n').replace(/\n*$/, '\n\n\n') +code;
+  return allDefs.replace(/\n\n+/g, '\n\n').replace(/\n*$/, '\n\n\n') + code;
 };
 
 /**
@@ -154,7 +154,7 @@ Blockly.Python.quote_ = function(string) {
                  .replace(/\n/g, '\\\n')
                  .replace(/\%/g, '\\%')
                  .replace(/'/g, '\\\'');
-  return '\"' + string + '\"';
+  return '\'' + string + '\'';
 };
 
 /**
@@ -167,17 +167,13 @@ Blockly.Python.quote_ = function(string) {
  * @private
  */
 Blockly.Python.scrub_ = function(block, code) {
-  if (code === null) {
-    // Block has handled code generation itself.
-    return '';
-  }
   var commentCode = '';
   // Only collect comments for blocks that aren't inline.
   if (!block.outputConnection || !block.outputConnection.targetConnection) {
     // Collect comment for this block.
     var comment = block.getCommentText();
     if (comment) {
-      commentCode += this.prefixLines(comment, '# ') + '\n';
+      commentCode += Blockly.Python.prefixLines(comment, '# ') + '\n';
     }
     // Collect comments for all value arguments.
     // Don't collect comments for nested statements.
@@ -185,15 +181,15 @@ Blockly.Python.scrub_ = function(block, code) {
       if (block.inputList[x].type == Blockly.INPUT_VALUE) {
         var childBlock = block.inputList[x].connection.targetBlock();
         if (childBlock) {
-          var comment = this.allNestedComments(childBlock);
+          var comment = Blockly.Python.allNestedComments(childBlock);
           if (comment) {
-            commentCode += this.prefixLines(comment, '# ');
+            commentCode += Blockly.Python.prefixLines(comment, '# ');
           }
         }
       }
     }
   }
   var nextBlock = block.nextConnection && block.nextConnection.targetBlock();
-  var nextCode = this.blockToCode(nextBlock);
+  var nextCode = Blockly.Python.blockToCode(nextBlock);
   return commentCode + code + nextCode;
 };

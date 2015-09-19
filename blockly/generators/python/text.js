@@ -3,7 +3,7 @@
  * Visual Blocks Language
  *
  * Copyright 2012 Google Inc.
- * https://blockly.googlecode.com/
+ * https://developers.google.com/blockly/
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,7 +24,7 @@
  */
 'use strict';
 
-goog.provide('Blockly.Python.text');
+goog.provide('Blockly.Python.texts');
 
 goog.require('Blockly.Python');
 
@@ -235,7 +235,7 @@ Blockly.Python['text_print'] = function(block) {
 };
 
 Blockly.Python['text_prompt'] = function(block) {
-  // Prompt function.
+  // Prompt function (internal message).
   var functionName = Blockly.Python.provideFunction_(
       'text_prompt',
       ['def ' + Blockly.Python.FUNCTION_NAME_PLACEHOLDER_ + '(msg):',
@@ -244,6 +244,25 @@ Blockly.Python['text_prompt'] = function(block) {
        '  except NameError:',
        '    return input(msg)']);
   var msg = Blockly.Python.quote_(block.getFieldValue('TEXT'));
+  var code = functionName + '(' + msg + ')';
+  var toNumber = block.getFieldValue('TYPE') == 'NUMBER';
+  if (toNumber) {
+    code = 'float(' + code + ')';
+  }
+  return [code, Blockly.Python.ORDER_FUNCTION_CALL];
+};
+
+Blockly.Python['text_prompt_ext'] = function(block) {
+  // Prompt function (external message).
+  var functionName = Blockly.Python.provideFunction_(
+      'text_prompt',
+      ['def ' + Blockly.Python.FUNCTION_NAME_PLACEHOLDER_ + '(msg):',
+       '  try:',
+       '    return raw_input(msg)',
+       '  except NameError:',
+       '    return input(msg)']);
+  var msg = Blockly.Python.valueToCode(block, 'TEXT',
+      Blockly.Python.ORDER_NONE) || '\'\'';
   var code = functionName + '(' + msg + ')';
   var toNumber = block.getFieldValue('TYPE') == 'NUMBER';
   if (toNumber) {
