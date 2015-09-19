@@ -1,5 +1,3 @@
-- index.html file is found within blockly/blockly/apps/code/index.html
+- index.html file is found within blockly/apps/index.html
 
-- Toolbox (list of blocks) is found in blockly/blockly/apps/code/template.soy (COMPILE AFTER EDITING! -> Look at top of file for details)
-
-- All Block and Python definitions are found in blockly/blockly/apps/code/minecraftPi.js
+- To recompress, run the python script "build.py" found in blockly/
