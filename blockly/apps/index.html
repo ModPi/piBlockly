@@ -1,7 +1,7 @@
 <html manifest=node.manifest>
 <head>
   <meta charset="utf-8">
-  <title>BlocklyDuino</title>
+  <title>piBlockly</title>
   						<!-- For Local Host -->
   <script type="text/javascript" src="../blockly_compressed.js"></script>
   <script type="text/javascript" src="../blocks_compressed.js"></script>
@@ -28,7 +28,7 @@
  * List of tab names.
  * @private
  */
-var TABS_ = ['blocks','mods', 'python'];
+var TABS_ = ['blocks', 'python'];
 
 var selected = 'blocks';
 
@@ -271,7 +271,7 @@ function init() {
   <table height="100%" width="100%">
     <tr>
       <td>
-        <h1>PiBlockly Version 2.0</h1>
+        <h1>piBlockly</h1>
       </td>
     </tr>
     <tr>
@@ -279,8 +279,6 @@ function init() {
         <table width="100%">
           <tr id="tabRow" height="1em">
             <td id="tab_blocks" class="tabon" onclick="tabClick('blocks')">Blocks</td>
-            <td class="tabmin">&nbsp;</td>
-            <td id="tab_mods" class="taboff" onclick="tabClick('mods')">My Mods</td>
             <td class="tabmin">&nbsp;</td>
             <td id="tab_python" class="taboff" onclick="tabClick('python')">Python</td>
             <td class="tabmin">&nbsp;</td>
@@ -298,7 +296,6 @@ function init() {
     </tr>
   </table>
   <div id="content_blocks" class="content"></div>
-  <textarea id="content_mods" class="content" readonly wrap="off"></textarea>
   <textarea id="content_python" class="content" readonly wrap="off"></textarea>
 
   <xml id="toolbox" style="display: none">
